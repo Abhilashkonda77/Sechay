@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sechay Solutions India Private limited</title>
+    <link rel="stylesheet" href="create.css">
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+
+<header>
+    <h1 style="color: aliceblue;font-style: italic;">Sechay Solutions India Private limited</h1>
+    <nav class="log">
+        <ul>
+            <li><a class="item" href="index.html">Home</a></li>
+            <li><a class="item" href="Careers.html">Careers</a></li>
+            <li><a class="item" href="Login.html">Login</a></li>
+        </ul>
+    </nav>
+</header>
+
+<body>
+    <style>
+        body {
+            /* Relative path to the image file */
+            background-image: url('img1.webp');
+            /* Set background size */
+            background-size: cover;
+            /* Set background to not repeat */
+            background-repeat: no-repeat;
+            /* Center the background */
+            background-position: center;
+        }
+    </style>
+    <div class="page">
+        <h2 style="text-align: center;">Create an account</h2>
+        <form id="registerForm">
+            <label for="firstname">Firstname:</label>
+            <input type="text" id="firstname" name="firstname" required><br><br>
+
+            <label for="lastname">Lastname:</label>
+            <input type="text" id="lastname" name="lastname" required><br><br>
+            
+            <label for="username">Username:</label>
+            <input type="email" id="username" name="username" required><br><br>
+
+            <label for="Password">Password:</label>
+            <input type="password" id="password" name="password" required> <br><br>
+
+            <label for="phoneno">Mobile No:</label>
+            <input type="tel" id="phoneno" name="phoneno" required><br><br>
+            
+            <label for="mail">Email:</label>
+            <input type="email" id="mail" name="mail" required><br><br>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        const registerForm = document.getElementById('registerForm');
+
+        registerForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const firstname = document.getElementById('firstname').value;
+            const lastname = document.getElementById('lastname').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const phoneno = document.getElementById('phoneno').value;
+            const mail = document.getElementById('mail').value;
+
+            // Validate all fields
+            if (firstname.trim() === '' || lastname.trim() === '' || username.trim() === '' || password.trim() === '' || phoneno.trim() === '' || mail.trim() === '') {
+                alert('All fields are required.');
+                return;
+            }
+
+            // Validate email
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(username)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            // Password policy: At least 8 characters, containing at least one uppercase letter, one lowercase letter, one number, and one special character
+            const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!passwordPattern.test(password)) {
+                alert('Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
+                return;
+            }
+
+            // Validate phone number
+            const phonePattern = /^\d{10}$/;
+            if (!phonePattern.test(phoneno)) {
+                alert('Please enter a valid 10-digit phone number.');
+                return;
+            }
+
+            // Check if user already exists in local storage
+            let existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+            const userExistsLocalStorage = existingUsers.some(user => user.username === username);
+            if (userExistsLocalStorage) {
+                alert('User already exists.');
+                return;
+            }
+
+            // Check if user already exists in session storage
+            let existingSessionUsers = JSON.parse(sessionStorage.getItem('users')) || [];
+            const userExistsSessionStorage = existingSessionUsers.some(user => user.username === username);
+            if (userExistsSessionStorage) {
+                alert('User already exists.');
+                return;
+            }
+
+            // Create user object
+            const user = {
+                firstname: firstname,
+                lastname: lastname,
+                username: username,
+                password: password,
+                phoneno: phoneno,
+                mail: mail
+            };
+
+            // Add user to existing users in local storage
+            existingUsers.push(user);
+            localStorage.setItem('users', JSON.stringify(existingUsers));
+
+            // Add user to existing users in session storage
+            existingSessionUsers.push(user);
+            sessionStorage.setItem('users', JSON.stringify(existingSessionUsers));
+
+            // Alert success
+            alert('Account created successfully!');
+        });
+    </script>
+</body>
+
+</html>
