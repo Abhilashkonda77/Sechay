@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: sechay-website
+spec: 
+  replicas: 2
+  selector: 
+    matchLabels: 
+      app: sechay-website
+  template:
+    metadata: 
+      labels: 
+        app: sechay-website
+    spec: 
+      containers: 
+        - name: sechay-website
+          image: abhilash369/sechay_website:v1
+          ports: 
+            - containerPort: 80
+
